@@ -1,11 +1,33 @@
 import { useState } from "react";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { addUser } from "./utils/userSlice";
+import { useNavigate } from "react-router";
+import { BASE_URL } from "./utils/constants";
 
 const Login = () => {
-  const [email, setemail] = useState("");
-  const [password, setPassword] = useState("");
-  const handleLogin = () => {
+  const [email, setemail] = useState("skarma@gmail.com");
+  const [password, setPassword] = useState("Password@123");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogin = async () => {
     //login logic
+    try {
+      const res = await axios.post(
+        BASE_URL + "/login",
+        {
+          email,
+          password,
+        },
+        { withCredentials: true }, // this withcredentials is important to get back the token in cookies inside browser
+      );
+
+      dispatch(addUser(res.data.data)); //adding user to reduc slice
+      navigate("/");
+    } catch (error) {
+      console.error("something went wrong in logIN" + error);
+    }
   };
 
   return (
