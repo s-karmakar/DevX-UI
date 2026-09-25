@@ -38,23 +38,27 @@ const Login = () => {
           <fieldset className="fieldset bg-base-300 border-base-300 rounded-box w-xs p-4 ">
             {/* <legend className="fieldset-legend">Enter Your Credentias</legend> */}
 
-            <label className="label mt-5 text-accent">Email</label>
+            <label className="label mt-5 text-accent ">Email</label>
             <input
               type="email"
-              className="input "
+              className="input validator "
               placeholder="xyz@mail.com"
               value={email}
               onChange={(e) => setemail(e.target.value)}
+              required
             />
+            <div className="validator-hint">Enter valid email address</div>
 
             <label className="label mt-5 text-accent">Password</label>
             <input
               type="password"
-              className="input"
+              className="input validator"
               placeholder="!Password@123"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
+            <div className="validator-hint">{}</div>
 
             {/* Email */}
             <button
