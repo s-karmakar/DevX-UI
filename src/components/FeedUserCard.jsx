@@ -4,24 +4,37 @@ const FeedUserCard = ({ feedUserDetails }) => {
   const { firstName, lastName, age, gender, photoURL, about, skills } =
     feedUserDetails;
   return (
-    <div className="card card-lg bg-base-300 w-96 shadow-sm">
-      <figure>
+    // <div className="card card-lg h-[45rem] w-96 shrink-0 overflow-hidden bg-base-300 shadow-sm">
+    <div className="card card-xl h-[45rem] w-96 shrink-0 bg-base-300 font-thin shadow-gray-400 shadow-md">
+      <figure className="h-96 w-full shrink-0 overflow-hidden">
         <img
-          src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
-          alt="Shoes"
+          className="h-full w-full object-cover"
+          src={photoURL}
+          alt={`${firstName} ${lastName}`}
         />
       </figure>
       <div className="card-body">
-        <h2 className="card-title">{firstName + " " + lastName} </h2>
-        {age && gender && (
-          <p>
-            {" "}
-            {age} {" - "} {gender}
-          </p>
-        )}
+        <h3 className="card-title font-sans">{firstName + " " + lastName} </h3>
+        {age && gender && <p>{age + ", " + gender}</p>}
         {about && <p>{about}</p>}
         <div className="card-actions justify-between mt-15">
-          <button className="btn btn-primary">Ignore</button>
+          <button className="btn btn-primary">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2.5"
+              stroke="currentColor"
+              className="size-[1.2em]"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M6 18 18 6M6 6l12 12"
+              />
+            </svg>
+            Ignore
+          </button>
           <button className="btn btn-secondary">
             Like{" "}
             <svg
