@@ -19,8 +19,7 @@ const Body = () => {
       const res = await axios.get(url, { withCredentials: true });
 
       const userData = res?.data;
-      // console.log(userData);
-      // console.log("restore user called");
+
       dispatch(addUser(userData));
     } catch (err) {
       if (err.status === 401) {
