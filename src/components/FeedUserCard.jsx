@@ -1,8 +1,23 @@
+import axios from "axios";
 import React from "react";
+import { BASE_URL } from "../utils/constants";
+import { useDispatch } from "react-redux";
+import { removeUserFromFeed } from "../utils/feedSlice";
 
 const FeedUserCard = ({ feedUserDetails }) => {
-  const { firstName, lastName, age, gender, photoURL, about, skills } =
+  const { _id, firstName, lastName, age, gender, photoURL, about, skills } =
     feedUserDetails;
+  const dispatch = useDispatch();
+
+  const handleSendReq = async (s, userID) => {
+    const res = await axios.post(
+      BASE_URL + "/request/send/" + s + "/" + userID,
+      {},
+      { withCredentials: true },
+    );
+    dispatch(removeUserFromFeed(userID));
+  };
+
   return (
     // <div className="card card-lg h-[45rem] w-96 shrink-0 overflow-hidden bg-base-300 shadow-sm">
     <div className="card card-xl h-[45rem] w-96 shrink-0 bg-base-300 font-thin shadow-gray-400 shadow-md">
@@ -18,7 +33,10 @@ const FeedUserCard = ({ feedUserDetails }) => {
         {age && gender && <p>{age + ", " + gender}</p>}
         {about && <p>{about}</p>}
         <div className="card-actions justify-between mt-15">
-          <button className="btn btn-primary">
+          <button
+            className="btn btn-primary"
+            onClick={() => handleSendReq("ignored", _id)}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -35,7 +53,10 @@ const FeedUserCard = ({ feedUserDetails }) => {
             </svg>
             Ignore
           </button>
-          <button className="btn btn-secondary">
+          <button
+            className="btn btn-secondary"
+            onClick={() => handleSendReq("interested", _id)}
+          >
             Like{" "}
             <svg
               xmlns="http://www.w3.org/2000/svg"

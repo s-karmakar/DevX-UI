@@ -25,8 +25,11 @@ const Feed = () => {
     getFeed();
   }, []);
 
+  if (feed.length === 0) return <div>All users vieweed</div>;
+
   return (
     <div className="flex items-center justify-center">
+      {console.log(feed)}
       {feed && <FeedUserCard feedUserDetails={feed[0]} />}
     </div>
   );
