@@ -8,6 +8,9 @@ import { BASE_URL } from "../utils/constants";
 const Login = () => {
   const [email, setemail] = useState("skarma@gmail.com");
   const [password, setPassword] = useState("Password@123");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [isLoginForm, setIsLoginForm] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -30,15 +33,59 @@ const Login = () => {
     }
   };
 
+  const handleSignUp = async () => {
+    try {
+      const res = await axios.post(
+        BASE_URL + "/signUp",
+        {
+          firstName,
+          lastName,
+          email,
+          password,
+        },
+        { withCredentials: true },
+      );
+
+      dispatch(addUser(res?.data?.data));
+      navigate("/profile");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="card-xl bg-base-300 w-96  shadow-sm mx-auto my-52 font-mono border rounded-box">
       <div className="card-body items-center ">
-        <h2 className="card-title">Log In</h2>
+        <h2 className="card-title">{isLoginForm ? "Log In" : "Sign Up"}</h2>
         <div>
           <fieldset className="fieldset bg-base-300 border-base-300 rounded-box w-xs p-4 ">
             {/* <legend className="fieldset-legend">Enter Your Credentias</legend> */}
+            { !isLoginForm &&
+              <>
+                <label className="label mt-2 text-accent ">First Name</label>
+                <input
+                  type="email"
+                  className="input  "
+                  placeholder="suhankar"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  required
+                />
 
-            <label className="label mt-5 text-accent ">Email</label>
+                <label className="label mt-2 text-accent ">Last Name</label>
+                <input
+                  type="email"
+                  className="input   "
+                  placeholder="karmakar"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  required
+                  
+                />
+              </>
+            }
+
+            <label className="label mt-2 text-accent ">Email</label>
             <input
               type="email"
               className="input validator "
@@ -49,7 +96,7 @@ const Login = () => {
             />
             <div className="validator-hint">Enter valid email address</div>
 
-            <label className="label mt-5 text-accent">Password</label>
+            <label className="label mt-2 text-accent">Password</label>
             <input
               type="password"
               className="input validator"
@@ -63,7 +110,7 @@ const Login = () => {
             {/* Email */}
             <button
               className="btn bg-amber-100 text-black border-[#e5e5e5] mt-8"
-              onClick={handleLogin}
+              onClick={isLoginForm ? handleLogin : handleSignUp}
             >
               <svg
                 aria-label="Email icon"
@@ -83,7 +130,7 @@ const Login = () => {
                   <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
                 </g>
               </svg>
-              Login with Email
+              {isLoginForm ? "Login with Email" : "Sign Up with Email"}
             </button>
 
             {/* Google */}
@@ -115,7 +162,7 @@ const Login = () => {
                   ></path>
                 </g>
               </svg>
-              Login with Google
+              {isLoginForm ? "Login with Google" : "Sign Up with Google"}
             </button>
 
             {/* LinkedIn */}
@@ -133,8 +180,16 @@ const Login = () => {
                   fillRule="evenodd"
                 ></path>
               </svg>
-              Login with LinkedIn
+              {isLoginForm ? "Login with Google" : "Sign Up with Google"}
             </button>
+            <p
+              className=" text font-semibold text-amber-200 my-3 mx-auto cursor-pointer"
+              onClick={() => setIsLoginForm((value) => !value)}
+            >
+              {isLoginForm
+                ? "New User? Please Sign UP"
+                : "Existing User? please Log In"}
+            </p>
           </fieldset>
         </div>
       </div>

@@ -8,7 +8,7 @@ import { addUser } from "../utils/userSlice";
 const EditProfile = ({ user }) => {
   const [firstName, setfirstName] = useState(user.firstName);
   const [lastName, setlastName] = useState(user.lastName);
-  const [age, setAge] = useState(user.age);
+  const [age, setAge] = useState(user.age || "");
   const [gender, setGender] = useState(user.gender?.toLowerCase() ?? "");
   const [photoURL, setPhotoURL] = useState(user.photoURL);
   //   const [skills, setSkills] = useState(user.skills);
