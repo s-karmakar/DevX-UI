@@ -2,11 +2,28 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import { BASE_URL } from "../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
-import { addRequests } from "../utils/requestsSlice";
+import { addRequests, removeRequest } from "../utils/requestsSlice";
 
 const RecivedRequests = () => {
   const receivedRequests = useSelector((state) => state.requests);
   const dispatch = useDispatch();
+
+  const reviewRequest = async (s, _id) => {
+    try {
+      const res = await axios.post(
+        BASE_URL + "/request/review/" + s + "/" + _id,
+        {},
+        {
+          withCredentials: true,
+        },
+      );
+      // console.log(res?.data?.data);
+      // const acceptedReq = res?.data?.data;
+      dispatch(removeRequest(_id));
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const fetchRequests = async () => {
     try {
@@ -25,6 +42,14 @@ const RecivedRequests = () => {
   }, []);
 
   if (!receivedRequests) return;
+
+  if (receivedRequests?.length === 0) {
+    return (
+      <div className="text-2xl align-middle justify-center">
+        No Request found
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -60,7 +85,10 @@ const RecivedRequests = () => {
                   {element?.fromUserID?.about}
                 </div>
               </div>
-              <button className="btn btn-circle btn-ghost btn-primary">
+              <button
+                className="btn btn-circle btn-ghost btn-primary"
+                onClick={() => reviewRequest("accepted", element._id)}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -76,7 +104,10 @@ const RecivedRequests = () => {
                   />
                 </svg>
               </button>
-              <button className="btn btn-ghost btn-secondary ">
+              <button
+                className="acceptBtn btn btn-ghost btn-secondary "
+                onClick={() => reviewRequest("accepted", element._id)}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
